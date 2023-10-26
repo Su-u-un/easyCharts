@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+
+/**
+ * 模块依赖引入
+ */
+
+var app = require('../app');
+const config = require('../config/default')
+var debug = require('debug')('server:server');
+var http = require('http');
+
+/**
+ * 获取环境变量中的端口号，并将其设置到 Express 应用程序对象的配置中。
+ */
+// var port = normalizePort(process.env.PORT || '3000');
+// 这边使用config文件的端口
+app.set('port', config.port);
+
+/**
+ * 创建http服务器
+ */
+
+var server = http.createServer(app);
+
+/**
+ * 调用 onListening 函数来处理该事件，输出服务器正在监听的地址。
+ */
+// 监听端口
+server.listen(config.port);
+// 处理错误
+server.on('error', onError);
+// 监听事件回调函数
+server.on('listening', onListening);
+
+/**
+ * 规范端口号
+ */
+
+// function normalizePort(val) {
+//   var port = parseInt(val, 10);
+
+//   if (isNaN(port)) {
+//     // named pipe
+//     return val;
+//   }
+
+//   if (port >= 0) {
+//     // port number
+//     return port;
+//   }
+
+//   return false;
+// }
+
+/**
+ * 处理错误函数
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * 监听事件回调
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
