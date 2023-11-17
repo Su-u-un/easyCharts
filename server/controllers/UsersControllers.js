@@ -1,3 +1,4 @@
+const JWT = require('../util/JWT');
 const usersDB = require('../models/UsersModel')
 
 exports.login = async (req,res)=>{
@@ -25,8 +26,9 @@ exports.login = async (req,res)=>{
             }, "7d")
             res.header("Authorization",token)//同时将token在响应头中返回给前端
             res.send({
-                ActionType: "OK",
-                msg:"success"
+                code: "0",//返回信息，
+                msg:"success",
+                data:token
             })
         }
     })
@@ -57,6 +59,7 @@ exports.register = async (req,res)=>{
                 }else{
                     res.send({
                         ActionType: "OK",
+                        code: "0",//返回信息，
                         msg:"success"
                     })
                 }

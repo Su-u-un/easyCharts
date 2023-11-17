@@ -2,11 +2,9 @@ const controller = require('../controllers/UsersControllers');
 
 module.exports = function(app){
   app.post('/users/login', (req, res) => {
-      // 发送一个响应
       controller.login(req, res);
     });
     app.post('/users/register', (req, res) => {
-      // 发送一个响应
       controller.register(req, res);
     });
 }

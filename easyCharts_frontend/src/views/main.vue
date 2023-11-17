@@ -1,32 +1,32 @@
 <template>
-    <div class="container">
-        <el-button @click="test1">show</el-button>
-        <el-button @click="test2">http2</el-button>
+    <div id="app" class="jp-wrapper">
+        <template>
+            <main-navbar ref="navbar" @showRight="showRight" />
+            <main-sidebar/>
+            <div class="jp-content__wrapper">
+            <main-content/>
+            </div>
+            <main-right ref="mainRight"/>
+        </template>
     </div>
 </template>
+  
+<script setup>
+import MainNavbar from './layout/_common_top'
+import MainSidebar from './layout/_common_left'
+import MainContent from './layout/_common_center'
+import MainRight from './layout/_common_right'
+import configService from '@/api/sys/configService'
+import userService from '@/api/sys/userService'
+import {ref} from 'vue'
 
-<script setup lang="ts">
-import axios from 'axios'
-import {ElButton} from 'element-plus'
+const isRightVisible = ref(false)
 
-const test1 = function(){
-    axios.post('/api/echarts/show', {name: 'test6'}).then(res => {
-        console.log(res.data);
-    })
+const mainRight = ref()
+
+const showRight = (flag)=>{
+    mainRight.value.showRight()
+    isRightVisible.value = flag
 }
-
-const test2 = function(){
-    axios.post('/api/echarts/delete', {name: 'test6'}).then(res => {
-        console.log(res.data);
-    })
-}
-
-
 </script>
-
-<style>
-.container{
-    display: flex;
-    flex-direction: row;
-}
-</style>
+  

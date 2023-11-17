@@ -61,6 +61,38 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+// 验证token中间件
+app.use((req,res,next)=>{
+  // 如果token有效 ,next() 
+  // 如果token过期了, 返回401错误
+  /*
+    首先排除登录注册接口
+  */
+  if(req.url==="/user/login" || req.url==="/user/register"){
+    next()
+    return;
+  }
+
+  const token = req.headers["authorization"].split(" ")[1]
+  // token解析
+  if(token){
+    var payload = JWT.verify(token)
+    // console.log(payload)
+    if(payload){
+      // 每一次请求,重新生成新的token
+      const newToken = JWT.generate({
+        _id:payload._id,
+        username:payload.username
+      },"7d")
+      res.header("Authorization",newToken)
+      next()
+    }else{
+      res.status(401).send({code:"-1",error:"token过期"})
+    }
+  }
+})
+
+
 // 处理错误
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
