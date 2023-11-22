@@ -14,20 +14,20 @@ exports.save = async (req, res) => {
                         })
                     }).catch(err => {
                         res.send({
-                            code: '-1',
+                            code: '-2',
                             error: err,
                             message:'请联系管理员'
                         })
                     })
             }else{
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '组件已存在'
                 })
             }
         }).catch(err => {
             res.send({
-                code: '-1',
+                code: '-2',
                 error: err,
                 message:'请联系管理员'
             })
@@ -41,12 +41,12 @@ exports.update = async (req, res) => {
         .then(result => {
             if(result.length === 0){
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '组件不存在'
                 })
             }else if (result.affectedRows !== 1) {
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '修改失败'
                 })
             }else{
@@ -58,7 +58,7 @@ exports.update = async (req, res) => {
             
         }).catch(err => {
             res.send({
-                code: '-1',
+                code: '-2',
                 message:'请联系管理员'
             })
             console.log(err)
@@ -71,7 +71,7 @@ exports.show = async (req, res) => {
         .then(result => {
             if(result.length === 0){
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '组件不存在'
                 })
             }else{
@@ -82,7 +82,7 @@ exports.show = async (req, res) => {
             }
         }).catch(err => {
             res.send({
-                code: '-1',
+                code: '-2',
                 message:'请联系管理员'
             })
             console.log(err)
@@ -96,12 +96,12 @@ exports.delete = async (req, res) => {
         .then(result => {
             if(result.length === 0){
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '组件不存在'
                 })
             }else if (result.affectedRows !== 1) {
                 res.send({
-                    code: '-1',
+                    code: '-2',
                     error: '删除失败'
                 })
             }else{
@@ -112,7 +112,7 @@ exports.delete = async (req, res) => {
             }
         }).catch(err => {
             res.send({
-                code: '-1',
+                code: '-2',
                 message:'请联系管理员'
             })
             console.log(err)

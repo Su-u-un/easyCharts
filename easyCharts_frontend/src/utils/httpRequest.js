@@ -1,6 +1,6 @@
 // import Vue from 'vue'
 import axios from 'axios'
-import { clearToken,getToken } from '@/utils/cookie.js'
+import { clearToken,getToken } from '@/utils/cookies.js'
 import router from '@/router'
 // import qs from 'qs'
 import {
@@ -39,7 +39,7 @@ axios.interceptors.response.use(res => {
   if (error.response.status === 408 || error.response.status === 401) { // 需要重新登录
     router.push({ name: 'login' })
     ElMessage({
-      message: error.response.data,
+      message: error.response.error,
       type: 'error',
       showClose: true,
       dangerouslyUseHTMLString: true,

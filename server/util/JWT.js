@@ -1,4 +1,5 @@
 const jsonwebtoken = require("jsonwebtoken")
+
 const secret = "sun"//解密密钥
 const JWT = {
     // 生成tokne

@@ -17,3 +17,15 @@ exports.exist =(value)=>{
     const _sql = "SELECT * FROM users WHERE username = ?";
     return db.query(_sql,value)
 }
+
+// // 查询用户信息
+exports.info =(value)=>{
+    const _sql = `SELECT * FROM users WHERE username = ?`
+    return db.query(_sql,value)
+}
+
+// 修改密码
+exports.updatePWD =(value)=>{
+    const _sql = `UPDATE users SET password = ? WHERE username = ?`
+    return db.query(_sql,value)
+}

@@ -22,7 +22,11 @@ export default defineConfig({
         target: "http://localhost:3002",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
-
+      },
+      "/else":{
+        target:"http://127.0.0.1:6688/xqgl",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/else/, ""),
       }
     }
   }

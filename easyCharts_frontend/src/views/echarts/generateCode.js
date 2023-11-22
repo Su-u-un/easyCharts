@@ -1,4 +1,3 @@
-
 export default function (data, dataUrl, datatype = 'static', type = 'line', custom = true) {
   let createdTemplate = ''
   let chartData = `{

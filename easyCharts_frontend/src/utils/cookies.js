@@ -1,3 +1,5 @@
+'use strict'
+
 import cookie from 'vue-cookie'
 
 const LOGIN_TOKEN = 'login_token',

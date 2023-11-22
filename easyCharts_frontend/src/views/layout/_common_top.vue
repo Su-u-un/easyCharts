@@ -1,307 +1,173 @@
 <template>
-  <nav ref="navbar"  :style="{ '--defaultTheme': defaultTheme}" :class="'jp-navbar  jp-navbar--' + navbarLayoutType ">
-    <div class="jp-navbar__header">
-      <!-- <h1 class="jp-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="jp-navbar__brand-lg" href="javascript:;">
-          <img height="50px" src='../../assets/img/logo.png'/>
-        </a>
-        <a class="jp-navbar__brand-mini" href="javascript:;">
-          <img :src="logo" height="40px" width="40px"/>
-        </a>
-      </h1> -->
-      <h1 class="jp-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="jp-navbar__brand-lg" href="javascript:;">
-           <img src='../../assets/img/logo.svg' height="40px" width="40px"/>
-           {{productName}}
-        </a>
-        <a class="jp-navbar__brand-mini" href="javascript:;">
-          <!-- <img :src="logo" height="40px" width="40px"/> -->
-          <img src='../../assets/img/logo.svg' height="40px" width="40px"/>
-        </a>
-      </h1>
+  <div class="top">
+    <div>logo</div>
+    <div class="info">
+      <el-dropdown>
+        <h3 style="color: rgb(245, 247, 250)">
+          欢迎使用，{{username}}
+        </h3>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="updatePWD = true">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="quit">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
-    <div class="jp-navbar__body clearfix" style="overflow:hidden">
 
-      <el-menu
-        class="jp-navbar__menu"
-        mode="horizontal">
-        <el-menu-item class="jp-navbar__switch"  @click="sidebarFold = !sidebarFold">
-             <i  :class="sidebarFold ? 'fa fa-indent':'fa fa-outdent'"></i>
-        </el-menu-item>
-      </el-menu>
-
-      <el-menu class="jp-navbar__menu " :default-active="topMenuActiveIndex" ref="topMenu"  mode="horizontal">
-        <el-menu-item  class="el_menu_item" v-for="menu in topMenuList"
-          :index="menu.id"
-          :key="menu.id"
-          @click="showLeftMenu(menu)"
-          :ref="menu.id"
-          :menu="menu">
-           <i :class="`${menu.icon} jp-sidebar__menu-icon`" style="display: inline-block!important;"></i>
-          {{menu.name}}
-          </el-menu-item>
-
-        <el-submenu index="2" v-if="topHideMenuList.length != 0">
-          <template slot="title">更多</template>
-          <el-menu-item  v-for="menu in topHideMenuList"
-          :index="menu.id"
-          :key="menu.id"
-          :ref="menu.id"
-          @click="showLeftMenu(menu)"
-          :menu="menu">
-           <i :class="`${menu.icon} jp-sidebar__menu-icon`" style="display: inline-block!important;"></i>
-          {{menu.name}}
-          </el-menu-item>
-        </el-submenu>
-        </el-menu>
-
-      <el-menu
-        class="jp-navbar__menu jp-navbar__menu--right"
-        mode="horizontal">
-        <el-menu-item class="jp-navbar__avatar">
-          <el-dropdown :show-timeout="0" placement="bottom">
-            <span class="el-dropdown-link">
-              <img class="hide-sm" :src="photo === ''?'/static/img/avatar.png':photo">{{ userName }}
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="updatePasswordHandle()">修改密码</el-dropdown-item>
-              <el-dropdown-item @click.native="bindWx()">绑定微信推送</el-dropdown-item>
-              <el-dropdown-item @click.native="logoutHandle()">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-menu-item>
-        <el-menu-item class="hide-sm"  @click="showRight">
-          <template slot="title">
-               <i class="el-icon-more rotate-90" @click="showRight"></i>
-          </template>
-        </el-menu-item>
-      </el-menu>
-    </div>
-    <!-- 弹窗, 修改密码 -->
-    <update-password v-if="updatePassowrdVisible" ref="updatePassowrd"></update-password>
-  </nav>
+    <el-dialog
+      v-model="updatePWD"
+      title="修改密码"
+      width="30%"
+      @close="canel(formRef)"
+    >
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="formRef"
+        autocomplete=”off”  
+      >
+        <el-form-item label="新的密码" prop="newPWD">
+          <el-input
+            type="password"
+            placeholder="请输入新密码"
+            v-model="form.newPWD"
+            show-password
+          />
+        </el-form-item>
+        <el-form-item label="确认密码" prop="reNewPWD">
+          <el-input
+            type="password"
+            placeholder="请确认密码"
+            v-model="form.reNewPWD"
+            show-password
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="canel">取消</el-button>
+          <el-button type="primary" @click="update">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
-<script>
-  import UpdatePassword from './UpdatePassword'
-  // import {clearLoginInfo} from '@/utils'
-  import notifyService from '@/api/notify/notifyService'
-  import mailBoxService from '@/api/mail/mailBoxService'
-  import loginService from '@/api/auth/loginService'
-  export default {
-    data () {
-      return {
-        updatePassowrdVisible: false,
-        bindWxVisible: false,
-        activeIndex: '',
-        topMenuList: [],
-        topHideMenuList: [],
-        allMenuList: [],
-        screenWidth: document.body.clientWidth,
-        noticeTabs: [
-          {
-            title: '通知',
-            count: 0,
-            list: [
-            ],
-            emptyText: '你已查看所有通知',
-            emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg'
-          },
-          {
-            title: '站内信',
-            count: 0,
-            list: [
-            ],
-            emptyText: '你已读完所有消息',
-            emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg'
-          }
-        ]
-      }
-    },
-    components: {
-      UpdatePassword
-    },
-    computed: {
-      navbarLayoutType () {
-        return this.$store.state.common.navbarLayoutType
-      },
-      topMenuActiveIndex: {
-        get () {
-          return this.$store.state.common.topMenuActiveIndex
-        },
-        set (val) {
-          this.$store.commit('common/updateTopMenuActiveIndex', val)
-        }
-      },
-      sidebarFold: {
-        get () {
-          return this.$store.state.common.sidebarFold
-        },
-        set (val) {
-          this.$store.commit('common/updateSidebarFold', val)
-        }
-      },
-      mainTabs: {
-        get () {
-          return this.$store.state.common.mainTabs
-        },
-        set (val) {
-          this.$store.commit('common/updateMainTabs', val)
-        }
-      },
-      userName: {
-        get () {
-          return this.$store.state.user.name
-        }
-      },
-      photo: {
-        get () {
-          return this.$store.state.user.photo
-        }
-      },
-      logo () {
-        return this.$store.state.config.logo
-      },
-      defaultTheme () {
-        return this.$store.state.config.defaultTheme
-      },
-      productName () {
-        return this.$store.state.config.productName
-      },
-      defaultLayout () {
-        return this.$store.state.config.defaultLayout
-      }
-    },
-    created () {
-      this.allMenuList = JSON.parse(localStorage.getItem('allMenuList') || '[]')
-      if (this.defaultLayout === 'top') {
-        this.topMenuActiveIndex = this.allMenuList[0].id
-        this.showLeftMenu(this.allMenuList[0])
-      } else {
-        this.$store.commit('common/updateLeftMenuList', this.allMenuList)
-      }
-      notifyService.list({readFlag: 0, isSelf: true, current: 1, size: 10}).then(({data}) => {
-        this.noticeTabs[0].count = data.total
-        this.noticeTabs[0].url = '/notify/MyNotifyList'
-        this.noticeTabs[0].list = data.records.map((item) => {
-          return {
-            id: item.id,
-            avatar: item.createBy.photo,
-            title: item.title,
-            description: item.content,
-            datetime: item.createDate,
-            type: '通知'
-          }
-        })
-      })
-      mailBoxService.list({readStatus: 0, current: 1, size: 10}).then(({data}) => {
-        this.noticeTabs[1].count = data.total
-        this.noticeTabs[1].url = '/mailbox/index'
-        this.noticeTabs[1].list = data.records.map((item) => {
-          return {
-            id: item.id,
-            avatar: item.sender.photo,
-            title: item.mailDTO.title,
-            description: item.mailDTO.content,
-            datetime: item.sendTime,
-            type: '站内信'
-          }
-        })
-      })
-    },
-    mounted () {
-      if (this.defaultLayout === 'top') {
-        this.fixTopMenu()
-      }
-    },
-    watch: {
-      topMenuActiveIndex (val) {
-        this.topMenuList.forEach((menu) => {
-          if (menu.id === val) {
-            this.showLeftMenu(menu)
-          }
-        })
-        this.topHideMenuList.forEach((menu) => {
-          if (menu.id === val) {
-            this.showLeftMenu(menu)
-          }
-        })
-      },
-      defaultLayout (val) {
-        if (this.defaultLayout === 'top') {
-          let needSetLeft = true
-          this.allMenuList.forEach((item) => {
-            if (item.id === this.topMenuActiveIndex) {
-              this.showLeftMenu(item)
-              needSetLeft = false
-            }
-          })
-          if (needSetLeft) {
-            this.topMenuActiveIndex = this.allMenuList[0].id
-            this.showLeftMenu(this.allMenuList[0])
-          }
-          this.fixTopMenu()
+<script setup>
+import {ElForm,ElFormItem,ElInput,ElButton,ElMessage,ElDropdown,ElDropdownMenu,ElDropdownItem,ElDialog} from 'element-plus'
+import {useUserStore} from '@/store/user.js';
+import authService from '@/api/auth/authService'
+import {clearToken} from '@/utils/cookies.js'
+import {ref} from 'vue';
+import {storeToRefs} from 'pinia';
+import {useRouter} from 'vue-router'
+
+const userStore = useUserStore()
+const {username} = storeToRefs(userStore)
+const router = useRouter()
+
+const updatePWD = ref(false)
+const formRef = ref()
+
+
+
+const checkPwd = (rule, value, callback) => {
+        if (form.value.reNewPWD && value !== form.value.reNewPWD) {
+          callback(new Error('两次输入密码不一致'))
         } else {
-          this.topMenuList = []
-          this.topHideMenuList = []
-          this.$store.commit('common/updateLeftMenuCategory', '')
-          this.$store.commit('common/updateLeftMenuList', this.allMenuList)
+          callback()
         }
       }
-    },
-    methods: {
-      fixTopMenu () {
-        let width = window.getComputedStyle(this.$refs.navbar).width
-        let size = (parseInt(width) - 800) / 124
-        this.topMenuList = []
-        this.topHideMenuList = []
-        this.allMenuList.forEach((item, index) => {
-          if (index < size - 1) {
-            this.topMenuList.push(item)
-          } else {
-            this.topHideMenuList.push(item)
-          }
-        })
-      },
-      showRight () {
-        this.$emit('showRight', true)
-      },
-      showLeftMenu (menu) {
-        this.$store.commit('common/updateLeftMenuList', menu.children)
-        this.$store.commit('common/updateLeftMenuCategory', menu.name)
-      },
-      // 修改密码
-      updatePasswordHandle () {
-        this.updatePassowrdVisible = true
-        this.$nextTick(() => {
-          this.$refs.updatePassowrd.init()
-        })
-      },
-      // 绑定微信
-      bindWx () {
-        this.bindWxVisible = true
-        this.$nextTick(() => {
-          this.$refs.BindWx.init()
-        })
-      },
-      // 退出
-      logoutHandle () {
-        this.$confirm(`确定进行[退出]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          loginService.logout().then(({data}) => {
-            // clearLoginInfo()
-            if (process.env.VUE_APP_SSO_LOGIN === 'true') {
-              let service = window.location.protocol + '//' + window.location.host + '/'
-              window.location.href = `${process.env.VUE_APP_CAS_SERVER}/logout?service=${service}`
-            } else {
-              this.$router.replace({name: 'login'})
-            }
-          })
-        })
+const checkRePwd = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'))
+        } else if (value !== form.value.newPWD) {
+          callback(new Error('两次输入密码不一致'))
+        } else {
+          callback()
+        }
       }
-    }
-  }
+
+// 修改密码表单
+const form = ref({
+  newPWD:'',
+  reNewPWD:''
+})
+
+// 表单校验
+const rules = ref({
+  newPWD:[
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 5, message: '密码最少5位数', trigger: 'blur' },
+    {validator:checkPwd,trigger: 'blur'},
+  ],
+  reNewPWD:[
+    {required: true,message:'请确认密码', trigger: 'blur',},
+    {validator:checkRePwd,trigger: 'blur'},
+  ],
+})
+
+
+// 取消修改按钮
+const canel = (e)=>{
+  if (!e) return
+  e.resetFields()
+}
+
+// 确定修改按钮
+const update = ()=>{
+  formRef.value.validate().then(valid=>{
+    if(valid){
+      authService.updatePWD({'username':username.value,'password':form.value.newPWD}).then(res=>{
+        if(res.code === "0"){
+          ElMessage({
+              message: "修改成功，请返回登录",
+              type: 'success',
+          })
+          clearToken()
+          router.push({path: '/login'})
+          updatePWD.value = false
+        }else{
+          ElMessage({
+              message: res.error,
+              type: 'error',
+          })
+        }
+      })
+      formRef.value.resetFields()
+    }else ElMessage({
+                message: "error",
+                type: 'error',
+            })
+  })
+}
+
+// 退出登录
+const quit = ()=>{
+  clearToken()
+  router.push({path: '/login'})
+}
 </script>
+
+
+<style lang="scss" scoped>
+.top{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 67px;
+  background-color: rgb(64, 158, 255);
+}
+.info{
+  margin-right:30px;
+}
+.el-dropdown:focus-visible {
+  outline: unset;
+}
+h3:focus-visible {
+  outline: unset;
+}
+</style>

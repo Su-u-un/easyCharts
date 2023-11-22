@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const JWT = require('./util/JWT');
 
 // 解析html
 const ejs = require('ejs');
@@ -37,6 +38,35 @@ app.use(express.json());
 // 解析数据值的方式，true表示可以是任何类型，false表示只能是字符串或数组
 app.use(express.urlencoded({ extended: true })); 
 
+// 验证token中间件(在注册路由前)
+app.use((req,res,next)=>{
+  // 如果token有效 ,next() 
+  // 如果token过期了, 返回401错误
+  /* 
+    首先排除登录注册接口
+  */
+  if(req.url==="/users/login" || req.url==="/users/register"){
+    next()
+    return;
+  }
+  const token = req.headers["authorization"].split(" ")[1]
+  //token解析
+  if(token){
+    var payload = JWT.verify(token)
+    if(payload){
+      // 每一次请求,重新生成新的token
+      const newToken = JWT.generate({
+        _id:payload._id,
+        username:payload.username
+      },"7d")
+      res.header("Authorization",newToken)
+      next()
+    }else{
+      res.status(401).send({code:"-1",error:"登录信息过期，请重新登录"})
+    }
+  }
+})
+
 // 引入路由
 /**
  * 注释掉的写法
@@ -48,10 +78,6 @@ app.use(express.urlencoded({ extended: true }));
 require('./routes/users')(app)
 require('./routes/echarts')(app)
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 
 app.use(cookieParser());
@@ -61,40 +87,9 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// 验证token中间件
-app.use((req,res,next)=>{
-  // 如果token有效 ,next() 
-  // 如果token过期了, 返回401错误
-  /*
-    首先排除登录注册接口
-  */
-  if(req.url==="/user/login" || req.url==="/user/register"){
-    next()
-    return;
-  }
-
-  const token = req.headers["authorization"].split(" ")[1]
-  // token解析
-  if(token){
-    var payload = JWT.verify(token)
-    // console.log(payload)
-    if(payload){
-      // 每一次请求,重新生成新的token
-      const newToken = JWT.generate({
-        _id:payload._id,
-        username:payload.username
-      },"7d")
-      res.header("Authorization",newToken)
-      next()
-    }else{
-      res.status(401).send({code:"-1",error:"token过期"})
-    }
-  }
-})
-
-
 // 处理错误
 app.use(function(err, req, res, next) {
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

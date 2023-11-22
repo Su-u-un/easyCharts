@@ -25,6 +25,9 @@
                         v-model="loginForm.password"
                         show-password
                     />
+                <el-form-item label="验证码" prop="code">
+                    <el-image @click="getCaptcha" :src="captchaImg" style="height:34px"></el-image>
+                </el-form-item>
                 </el-form-item>
                 <el-form-item class="login_btn">
                     <el-button :loading="loading"  type="primary" @click="handleLogin()">登录</el-button>
@@ -82,11 +85,15 @@
 </template>
   
 <script setup>
-import {ElForm,ElFormItem,ElInput,ElButton,ElMessage} from 'element-plus'
-import {ref} from 'vue'
+import {ElForm,ElFormItem,ElInput,ElButton,ElMessage,ElImage} from 'element-plus'
+import {ref,onMounted} from 'vue'
 import {useRouter} from 'vue-router'
-import loginService from '@/api/auth/loginService'
-// import {setToken} from '@/utils/auth'
+import loginService from '@/api/auth/authService'
+import {setToken} from '@/utils/cookies'
+
+onMounted(() => {
+  getCaptcha()
+})
 
 //登录中
 let loading = ref(false)
@@ -96,7 +103,6 @@ const loginRef = ref()
 const registerRef = ref()
 
 const router = useRouter()
-
 
 const checkPwd = (rule, value, callback) => {
         if (registerForm.value.re_password && value !== registerForm.value.re_password) {
@@ -117,7 +123,9 @@ const checkRePwd = (rule, value, callback) => {
 //登录表单
 const loginForm = ref({
           username:'',
-          password:''
+          password:'',
+          uuid:'',
+          code:''
         })
 //注册表单
 const registerForm = ref({
@@ -140,16 +148,19 @@ const formRules = ref({
             {required: true,message:'请确认密码', trigger: 'blur',},
             {validator:checkRePwd,trigger: 'blur'},
           ],
-          imageCode:[
-            {required:true,message:'请输入验证码',trigger:'change'},
-            {len:4,message:'请输入正确的验证码'}
+        //   imageCode:[
+        //     {required:true,message:'请输入验证码',trigger:'change'},
+        //     {len:4,message:'请输入正确的验证码'}
+        //   ],
+          code: [
+            {required: true, message: '验证码不能为空', trigger: 'blur'}
           ]
         })
-
 //切换表单
 const turnForm = ()=>{
     turn.value = !turn.value
 }
+// 重置表单
 const resetForm = (e)=>{
     e.resetFields()
 }
@@ -161,7 +172,7 @@ const handleLogin = ()=>{
             loginService.login(loginForm.value).then(res=>{
               if (res.code === "0") {
                 setToken(res.data)
-                router.push({path: '/echarts',});
+                router.push({path: '/',});
                 ElMessage({
                     message: "登录成功!",
                     type: 'success',
@@ -186,7 +197,7 @@ const handleLogin = ()=>{
         }
     })
 }
-      //注册按钮
+//注册按钮
 const handleRegister = ()=>{
     registerRef.value.validate(valid=>{
         if(valid){
@@ -222,7 +233,13 @@ const handleRegister = ()=>{
             })
     })
 }
-
+// 获取验证码
+const getCaptcha = ()=>{
+    loginService.getCode().then(({data}) => {
+        const captchaImg = ref('data:image/gif;base64,' + data.codeImg)
+        loginForm.value.uuid = data.uuid
+    })
+}
 </script>
   
 <style scoped>
