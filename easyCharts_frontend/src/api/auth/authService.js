@@ -36,9 +36,9 @@ export default {
       method: 'get'
     })
   },
-  getCode: function () {
+  getCaptcha: function () {
     return request({
-      url: '/sys/getCode',
+      url: '/users/getCaptcha',
       method: 'get'
     })
   },

@@ -6,6 +6,7 @@ const db = mysql.createConnection({
     host:config.database.host,	//连接的数据库地址
     user:config.database.user,	//mysql的连接用户名
     password:config.database.password,	// 对应用户的密码
+    multipleStatements: config.database.multipleStatements
 });
 
 // 连接指定数据库
@@ -14,9 +15,13 @@ const pool = mysql.createPool({
     user:config.database.user,	//mysql的连接用户名
     password:config.database.password,	// 对应用户的密码
     database:config.database.database,	//所需要连接的数据库的名称（可选）
+    multipleStatements: config.database.multipleStatements
 });
 
-
+// 连接数据库
+exports.connect = (config) => {
+    return mysql.createPool(config)
+}
 
 // 直接使用整个sql
 exports.dbbs = (sql,values) => {

@@ -3,7 +3,7 @@ import request from '@/utils/httpRequest'
 export default {
   save: function (inputForm) {
     return request({
-      url: '/database/datalink/dataSource/save',
+      url: '/data/dataSource/save',
       method: 'post',
       data: inputForm
     })
@@ -11,34 +11,23 @@ export default {
 
   test: function (inputForm) {
     return request({
-      url: '/database/datalink/dataSource/test',
+      url: '/data/dataSource/test',
       method: 'post',
       data: inputForm
     })
   },
 
-  checkEnName: function (oldEnName, enName) {
-    return request({
-      url: '/database/datalink/dataSource/checkEnName',
-      method: 'get',
-      params: {
-        oldEnName: oldEnName,
-        enName: enName
-      }
-    })
-  },
-
   delete: function (ids) {
     return request({
-      url: '/database/datalink/dataSource/delete',
+      url: '/data/dataSource/delete',
       method: 'delete',
-      params: { ids: ids }
+      params: { id: ids }
     })
   },
 
   queryById: function (id) {
     return request({
-      url: '/database/datalink/dataSource/queryById',
+      url: '/data/dataSource/queryById',
       method: 'get',
       params: { id: id }
     })
@@ -46,7 +35,7 @@ export default {
 
   list: function (params) {
     return request({
-      url: '/database/datalink/dataSource/list',
+      url: '/data/dataSource/list',
       method: 'get',
       params: params
     })

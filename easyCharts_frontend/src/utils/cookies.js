@@ -20,6 +20,7 @@ export function getToken() {
 
 export function clearToken() {
     cookie.delete(LOGIN_TOKEN)
+    cookie.delete('captcha')
 }
 
 export function setShareToken(token) {

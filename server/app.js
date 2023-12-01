@@ -4,7 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const JWT = require('./util/JWT');
-
+const session = require("express-session");
+const config = require('./config/default');
 // 解析html
 const ejs = require('ejs');
 
@@ -37,15 +38,17 @@ app.set('view engine','html');
 app.use(express.json());
 // 解析数据值的方式，true表示可以是任何类型，false表示只能是字符串或数组
 app.use(express.urlencoded({ extended: true })); 
+app.use(cookieParser());
+app.use(session(config.session));
 
 // 验证token中间件(在注册路由前)
 app.use((req,res,next)=>{
   // 如果token有效 ,next() 
   // 如果token过期了, 返回401错误
   /* 
-    首先排除登录注册接口
+    首先排除登录注册验证码接口
   */
-  if(req.url==="/users/login" || req.url==="/users/register"){
+  if(req.url==="/users/login" || req.url==="/users/register" || req.url==="/users/getCaptcha"){
     next()
     return;
   }
@@ -77,10 +80,11 @@ app.use((req,res,next)=>{
 // 也可以写成如下格式
 require('./routes/users')(app)
 require('./routes/echarts')(app)
+require('./routes/data')(app)
 
 app.use(logger('dev'));
 
-app.use(cookieParser());
+
 
 // 捕获请求 传递404的中间件
 app.use(function(req, res, next) {

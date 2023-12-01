@@ -2,7 +2,7 @@
   <div class="page">
     <el-form size="small" :inline="true"  class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
          <el-form-item prop="name">
-           <el-input size="small" v-model="searchForm.name" placeholder="组件名称" clearable></el-input>
+           <el-input size="small" v-model="searchForm.name" placeholder="组件名称"></el-input>
          </el-form-item>
         <el-form-item>
           <el-button  type="primary" @click="refreshList()" size="small">查询</el-button>
@@ -18,13 +18,14 @@
             <el-button type="danger"   size="small" @click="del()" :disabled="$refs.echartsTable && $refs.echartsTable.getCheckboxRecords().length === 0">删除</el-button>
           </template>
         </vxe-toolbar>
-        <div >
+        <div style="height: calc(100% - 85px);">
           <vxe-table
             border="inner"
             auto-resize
             resizable
             :loading="loading"
             size="small"
+            height="auto"
             ref="echartsTable"
             show-header-overflow
             show-overflow
@@ -40,21 +41,21 @@
             <vxe-column type="seq" width="40"></vxe-column>
             <vxe-column type="checkbox"  width="40px"></vxe-column>
             <vxe-column  title="组件名称" field="name" sortable>
-                <template slot-scope="scope">
-                    <el-link  type="primary" :underline="false" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
+                <template #default="scope">
+                    <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
                 </template>
             </vxe-column>
             <vxe-column  title="数据模型" field="dataSet.name" sortable> </vxe-column>
             <vxe-column  title="备注信息" field="remarks" sortable></vxe-column>
             <vxe-column title="操作" width="250px" fixed="right" align="center">
-                <template  slot-scope="scope">
-                  <el-button type="text"  icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+                <template  #default="scope">
+                  <el-button  link  icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
                   <el-divider direction="vertical"></el-divider>
-                  <el-button type="text"  size="small" icon="el-icon-edit" @click="edit(scope.row.id)">修改</el-button>
+                  <el-button  link  size="small" icon="el-icon-edit" @click="edit(scope.row.id)">修改</el-button>
                   <el-divider direction="vertical"></el-divider>
-                  <el-button type="text"  size="small" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+                  <el-button  link  size="small" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
                   <el-divider direction="vertical"></el-divider>
-                  <el-button type="text"  icon="el-icon-view" size="small" @click="generate(scope.row)">预览</el-button>
+                  <el-button  link  icon="el-icon-view" size="small" @click="generate(scope.row)">预览还没写</el-button>
                 </template>
             </vxe-column>
           </vxe-table>
@@ -85,7 +86,107 @@
         searchForm: {
           name: ''
         },
-        dataList: [],
+        dataList: [
+              {
+                  "id": "1419566072641654786",
+                  "createDate": "2021-07-26 15:51:41",
+                  "createBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "updateDate": "2021-07-28 02:09:36",
+                  "updateBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "delFlag": 0,
+                  "name": "ddd",
+                  "dataSet": {
+                      "id": "d1be33a50f4c4a9787de5e5c304f4819",
+                      "name": "民族占比分析",
+                      "columnList": [],
+                      "params": []
+                  },
+                  "option": "{\"title\":{\"show\":true,\"text\":\"\",\"left\":\"auto\",\"textStyle\":{\"color\":\"#333\",\"fontSize\":18},\"subtext\":\"\",\"subtextStyle\":{\"color\":\"#aaa\",\"fontSize\":12}},\"tooltip\":{\"textStyle\":{\"color\":\"#fff\",\"fontSize\":14}},\"grid\":{\"left\":10,\"top\":60,\"right\":10,\"bottom\":60},\"legend\":{\"show\":true,\"orient\":\"horizontal\",\"textStyle\":{\"fontSize\":12,\"color\":\"#333\"}},\"extend\":{\"series\":{\"label\":{\"normal\":{\"show\":false,\"position\":\"top\",\"fontSize\":12,\"color\":\"#333\",\"fontWeight\":\"normal\"}},\"barMaxWidth\":0,\"barMinHeight\":0}},\"colors\":[\"#6395f9\",\"#64daab\",\"#657698\",\"#f6c02d\",\"#e96d5b\"]}",
+                  "type": "line",
+                  "xnames": "name",
+                  "ynames": "num"
+              },
+              {
+                  "id": "1419566229965803522",
+                  "createDate": "2021-07-26 15:52:18",
+                  "createBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "updateDate": "2021-07-26 15:52:18",
+                  "updateBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "delFlag": 0,
+                  "name": "嗯嗯嗯4444www",
+                  "dataSet": {
+                      "id": "1404420177289830402",
+                      "name": "哈哈",
+                      "columnList": [],
+                      "params": []
+                  },
+                  "option": "{\"title\":{\"show\":true,\"text\":\"jjaaakjdksfjsfs\",\"left\":\"auto\",\"textStyle\":{\"color\":\"#333\",\"fontSize\":18},\"subtext\":\"\",\"subtextStyle\":{\"color\":\"#aaa\",\"fontSize\":12}},\"tooltip\":{\"textStyle\":{\"color\":\"#fff\",\"fontSize\":14}},\"grid\":{\"left\":10,\"top\":60,\"right\":10,\"bottom\":60},\"legend\":{\"show\":true,\"orient\":\"horizontal\",\"textStyle\":{\"fontSize\":12,\"color\":\"#333\"}},\"extend\":{\"series\":{\"label\":{\"normal\":{\"show\":true,\"position\":\"top\",\"fontSize\":12,\"color\":\"#C61818\",\"fontWeight\":\"normal\"}},\"barMaxWidth\":0,\"barMinHeight\":0}},\"colors\":[\"#6395f9\",\"#64daab\",\"#657698\",\"#f6c02d\",\"#e96d5b\"]}",
+                  "type": "ring",
+                  "xnames": "id",
+                  "ynames": "office_id"
+              },
+              {
+                  "id": "6050650bea9d4f89a3ce2476f1d224c1",
+                  "createDate": "2018-12-07 19:47:29",
+                  "createBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "updateDate": "2023-02-12 23:43:36",
+                  "updateBy": {
+                      "id": "1",
+                      "roleIdList": [],
+                      "roleIds": "",
+                      "admin": false,
+                      "postIdList": [],
+                      "roleNames": ""
+                  },
+                  "delFlag": 0,
+                  "name": "嗯嗯嗯4444",
+                  "dataSet": {
+                      "id": "d1be33a50f4c4a9787de5e5c304f4819",
+                      "name": "民族占比分析",
+                      "columnList": [],
+                      "params": []
+                  },
+                  "option": "{\"title\":{\"show\":true,\"text\":\"jjaaakjdksfjsfs\",\"left\":\"auto\",\"textStyle\":{\"color\":\"#333\",\"fontSize\":18},\"subtext\":\"\",\"subtextStyle\":{\"color\":\"#aaa\",\"fontSize\":12}},\"tooltip\":{\"textStyle\":{\"color\":\"#fff\",\"fontSize\":14}},\"grid\":{\"left\":10,\"top\":60,\"right\":10,\"bottom\":60},\"legend\":{\"show\":true,\"orient\":\"horizontal\",\"textStyle\":{\"fontSize\":12,\"color\":\"#333\"}},\"extend\":{\"series\":{\"label\":{\"normal\":{\"show\":true,\"position\":\"top\",\"fontSize\":12,\"color\":\"#C61818\",\"fontWeight\":\"normal\"}},\"barMaxWidth\":0,\"barMinHeight\":0}},\"colors\":[\"#A21838\",\"#64daab\",\"#657698\",\"#f6c02d\",\"#e96d5b\"]}",
+                  "type": "histogram",
+                  "xnames": "name",
+                  "ynames": "value"
+              }
+          ],
         tablePage: {
           total: 0,
           currentPage: 1,
@@ -97,24 +198,28 @@
     },
     components: {
       EchartsForm,
-      ElInput, ElButton,ElForm,ElFormItem
+      ElLink,
+      ElInput, 
+      ElButton,
+      ElForm,
+      ElFormItem,
+      ElDivider
     },
-    activated () {
+    created () {
       this.refreshList()
     },
     methods: {
       // 获取数据列表
       refreshList () {
         this.loading = true
-        console.log("youde");
         echartsService.list({
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
           ...this.searchForm
-        }).then(({data}) => {
-          this.dataList = data.records
-          this.tablePage.total = data.total
+        }).then((res) => {
+          this.dataList = res.records
+          this.tablePage.total = res.total
           this.loading = false
         })
       },
@@ -138,7 +243,7 @@
       },
       // 新增数据源
       toDataSet () {
-        this.$router.push('/database/datamodel/DataSetList')
+        this.$router.push('/database/datamodel')
       },
       // 修改
       edit (id) {
@@ -183,7 +288,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page{
   height: 100%;
     .top{

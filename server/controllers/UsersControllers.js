@@ -111,7 +111,7 @@ exports.info = async (req,res)=>{
     const token = req.headers["authorization"].split(" ")[1]
     const payload = JWT.verify(token)
     const username = payload.username
-    await usersDB.info(username).then(result=>{
+    await usersDB.infoByName(username).then(result=>{
         res.send({
             ActionType: "OK",
             code: "0",//返回信息，
@@ -123,8 +123,4 @@ exports.info = async (req,res)=>{
             error: err
         })
     })
-}
-
-exports.getCaptcha = async (req,res)=>{
-    
 }

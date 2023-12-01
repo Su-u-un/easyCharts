@@ -4,13 +4,12 @@
       center
       width="80%"
       :close-on-click-modal="false"
-       v-dialogDrag
        v-if="visible"
        class="design-chart"
-      :visible.sync="visible">
+      v-model="visible">
       <el-form size="small" :model="inputForm"  ref="inputForm" @keyup.enter.native="doSubmit()"
                :class="method==='view'?'readonly':''" :disabled="method==='view'"
-               v-loading="loading" @submit.native.prevent>
+               :v-loading="loading" @submit.native.prevent>
         <el-container>
           <el-container>
             <el-aside width="250px" style="padding-left: 15px">
@@ -23,21 +22,21 @@
                   :value="item.id">
                 </el-option>
               </el-select>
-              <draggable class="jp-filed-panel"  :list="metas" group="charts" @change="log">
+              <draggable class="jp-filed-panel" v-model="metas" group="charts" @change="log">
                 <div
                   class="list-group-item"
                   v-for="(element, index) in metas"
                   :key="index"
                 >
-                <i class=" fa fa-arrows "> {{ element.label }}</i>
+                  <i class=" fa fa-arrows "> {{ element.label }}</i>
                 </div>
               </draggable>
             </el-aside>
             <el-main class="eMain">
               <el-header class="eHeader">
                 <el-menu  class="el-menu-dm"   mode="horizontal" @select="handleSelect">
-                  <el-submenu index="1">
-                    <template slot="title">基本图表</template>
+                  <el-sub-menu index="1">
+                    <template #title>基本图表</template>
                     <el-menu-item index="line">折线图</el-menu-item>
                     <el-menu-item index="histogram">柱状图</el-menu-item>
                     <el-menu-item index="bar">条形图</el-menu-item>
@@ -46,9 +45,9 @@
                     <el-menu-item index="waterfall">瀑布图</el-menu-item>
                     <el-menu-item index="funnel">漏斗图</el-menu-item>
                     <el-menu-item index="radar">雷达图</el-menu-item>
-                  </el-submenu>
-                  <el-submenu index="2">
-                    <template slot="title">复杂图表</template>
+                  </el-sub-menu>
+                  <el-sub-menu index="2">
+                    <template #title>复杂图表</template>
                     <el-menu-item index="heatmap">热力图</el-menu-item>
                     <el-menu-item index="scatter">散点图</el-menu-item>
                     <el-menu-item index="candle">K线图</el-menu-item>
@@ -56,16 +55,16 @@
                     <el-menu-item index="wordcloud">词云图</el-menu-item>
                     <el-menu-item index="liquidfill">水球图</el-menu-item>
                   
-                  </el-submenu>
-                  <el-submenu index="3">
-                    <template slot="title">地图</template>
+                  </el-sub-menu>
+                  <el-sub-menu index="3">
+                    <template #title>地图</template>
                    <el-menu-item index="map">中国地图</el-menu-item>
-                  </el-submenu>
-                  <el-submenu index="4">
-                    <template slot="title">其他</template>
+                  </el-sub-menu>
+                  <el-sub-menu index="4">
+                    <template #title>其他</template>
                       <el-menu-item index="table">表格</el-menu-item>
-                  </el-submenu>
-                  <el-button type="text" class="el-btn-dm" @click="handleGenerateCode">生成代码</el-button>
+                  </el-sub-menu>
+                  <el-button link class="el-btn-dm" @click="handleGenerateCode">生成代码</el-button>
                 </el-menu>
               </el-header>
               <el-row class="chartMain" :gutter="12">
@@ -74,7 +73,7 @@
                     <div slot="header" class="clearfix">
                       <span style="font-weight:800" class="fa fa-list">X轴</span>
                     </div>
-                    <draggable class="fieldpanel"  @add="onMove" :list="xMetas" group="charts" @change="log">
+                    <draggable class="fieldpanel"  @add="onMove" v-model="xMetas" group="charts" @change="log">
                       <li
                         class="list-group-item"
                         v-for="(element, index) in xMetas"
@@ -90,20 +89,19 @@
                     <div slot="header" class="clearfix">
                       <span style="font-weight:800" class="fa fa-list"> Y轴</span>
                     </div>
-                    <draggable class="fieldpanel" :list="yMetas" group="charts" @change="log">
-                          <li
-                            class="list-group-item"
-                            v-for="(element, index) in yMetas"
-                            :key="index"
-                          >
-                            <i class=" fa fa-arrows "> {{ element.label }}</i>
-                            </li>
-                        </draggable>
+                    <draggable class="fieldpanel" v-model="yMetas" group="charts" @change="log">
+                      <li
+                        class="list-group-item"
+                        v-for="(element, index) in yMetas"
+                        :key="index"
+                      >
+                        <i class=" fa fa-arrows "> {{ element.label }}</i>
+                      </li>
+                    </draggable>
                   </el-card>
                 </el-col>
                 <el-col :span="24">
                   <el-card class="chartMain">
-                    <!-- <v-chart :options="polar"/> -->
                     <template v-if="inputForm.type === 'table'">
                       <el-table
                         :data="chartData.rows">
@@ -135,13 +133,14 @@
             <el-aside width="280px" style="padding-right:15px;padding-left:15px;border-left: 1px solid rgb(238, 238, 238);">
               <el-form label-width="100px"
                        label-position="left"
-                       size="mini">
+                       size="small">
                 <!-- 组件配置 -->
                 <template>
                   <p>
                     <el-checkbox v-model="custom">开启自定义配置</el-checkbox>
                   </p>
-                  <common-option v-if="custom"/>
+                  <!-- <common-option v-if="custom"/> -->
+                  <div v-if="custom">zidinyi</div>
                   <el-alert v-else
                     title="不使用自定义配置，将按照默认风格展示echarts图表，生成的代码会比较简洁，不包含复杂的配置项。"
                     type="info"
@@ -154,13 +153,12 @@
         </el-container>
       </el-form>
       <span slot="footer"  class="dialog-footer">
-        <el-button size="small" v-if="method != 'view'" @click="doSubmit()" type="primary" icon="el-icon-circle-check" v-noMoreClick>确定</el-button>
+        <el-button size="small" v-if="method != 'view'" @click="doSubmit()" type="primary" icon="el-icon-circle-check">确定</el-button>
         <el-button size="small" @click="visible = false" icon="el-icon-circle-close">关闭</el-button>
       </span>
       <el-dialog
-            :visible.sync="codeVisible"
+            v-model="codeVisible"
             :close-on-click-modal="false"
-            v-dialogDrag
             width="800px"
             center
             append-to-body
@@ -177,9 +175,9 @@
                 编辑器
                 </el-tab-pane>
             </el-tabs>
-            <span slot="footer"  class="dialog-footer">
+            <span slot="footer" class="dialog-footer">
               <el-button
-                type="text"
+                  link
                   v-clipboard:copy="codeCopyValue"
                   v-clipboard:success="onCopy"
                   v-clipboard:error="onError">
@@ -191,9 +189,10 @@
   </template>
   
   <script>
-  import draggable from 'vuedraggable'
+  // import draggable from 'vuedraggable'
+  import { VueDraggableNext } from 'vue-draggable-next'
   import {VAceEditor} from 'vue3-ace-editor'
-  import {ElOption,ElSelect,ElAside,ElMenuItem,ElSubMenu,ElButton,ElHeader,ElCard,ElCol,ElTableColumn,ElTable,ElRow,ElCheckbox,ElMain,ElForm,ElFormItem,ElAlert,ElDialog,ElContainer,ElTabPane,ElTabs} from 'element-plus'
+  import {ElMenu,ElMessage,ElOption,ElSelect,ElAside,ElMenuItem,ElSubMenu,ElButton,ElHeader,ElCard,ElCol,ElTableColumn,ElTable,ElRow,ElCheckbox,ElMain,ElForm,ElFormItem,ElAlert,ElDialog,ElContainer,ElTabPane,ElTabs} from 'element-plus'
 
   import 'ace-builds/src-noconflict/ext-language_tools'
   import 'ace-builds/src-noconflict/mode-html'
@@ -213,9 +212,11 @@
 
   export default {
     components: {
-      draggable,
+      draggable:VueDraggableNext,
       commonOption,
-      VAceEditor
+      VAceEditor,
+      ElMessage,
+      ElMenu,ElOption,ElSelect,ElAside,ElMenuItem,ElSubMenu,ElButton,ElHeader,ElCard,ElCol,ElTableColumn,ElTable,ElRow,ElCheckbox,ElMain,ElForm,ElFormItem,ElAlert,ElDialog,ElContainer,ElTabPane,ElTabs
     },
     provide () {
       return {
@@ -316,8 +317,40 @@
     watch: {
       'inputForm.dataSet.id' (val) {
         if (val) {
-          dataMetaService.queryNeedByDataSetId(val).then(({data}) => {
-            this.metas = data.filter((item) => {
+          dataMetaService.queryNeedByDataSetId(val).then(res => {
+//             const data = [
+//   {
+//     "id": "1624751016375267329",
+//     "createDate": "2021-06-14 17:46:45",
+//     "createBy": "46bfed60109a4daa9f8b3679c2d6c7ac",
+//     "updateDate": "2021-07-25 13:17:34",
+//     "updateBy": "1",
+//     "delFlag": 0,
+//     "name": "name",
+//     "label": "name",
+//     "type": "VARCHAR",
+//     "isNeed": true,
+//     "dataSetId": "d1be33a50f4c4a9787de5e5c304f4819",
+//     "sort": 0
+//   },
+//   {
+//     "id": "1624751016463347713",
+//     "createDate": "2023-02-12 20:43:23",
+//     "createBy": "1",
+//     "updateDate": "2023-02-12 20:43:23",
+//     "updateBy": "1",
+//     "delFlag": 0,
+//     "name": "value",
+//     "label": "value",
+//     "type": "INT",
+//     "isNeed": true,
+//     "dataSetId": "d1be33a50f4c4a9787de5e5c304f4819",
+//     "sort": 1
+//   }
+// ]        
+
+            // 过滤掉inputform含有的值
+            this.metas = res.data.filter((item) => {
               let excludeNames = ',' + this.inputForm.xnames + ',' + this.inputForm.ynames + ','
               if (excludeNames.indexOf(',' + item.name + ',') >= 0) {
                 return false
@@ -334,13 +367,15 @@
         this.inputForm.xnames = val.map((item) => {
           return item.name
         }).join(',')
-        this.refreshChart()
+        this.refreshChart('xmeta')
+
       },
       yMetas (val) {
         this.inputForm.ynames = val.map((item) => {
           return item.name
         }).join(',')
-        this.refreshChart()
+        this.refreshChart('ymeta')
+
       },
       codeActiveName (val) {
         this.codeCopyValue = val === 'dy' ? this.dyTemplate : this.staticTemplate
@@ -365,20 +400,74 @@
         this.inputForm.dataSet.id = ''
         
         this.$nextTick(() => {
+        console.log(this.inputForm)
+
           this.$refs.inputForm.resetFields()
-          dataSetService.list({'current': 1, 'size': -1}).then(({data}) => {
-            this.dataSets = data.records
+            dataSetService.list({'current': 1, 'size': -1}).then(res => {
+            this.dataSets = res.records
           })
           if (method === 'edit' || method === 'view') { // 修改或者查看
-            echartsService.queryDesignById(this.inputForm.id).then(({data}) => {
-              this.inputForm = this.recover(this.inputForm, data.echarts)
-              this.xMetas = data.xColumnList
-              this.yMetas = data.yColumnList
-              if (data.echarts.option === '') {
-                this.custom = false
-              } else {
-                this.activeOption = JSON.parse(data.echarts.option)
-              }
+            echartsService.queryDesignById(this.inputForm.id).then(res => {
+              const data = {
+                
+  "echarts": {
+    "id": "1419566072641654786",
+    "createDate": "2021-07-26 15:51:41",
+    "createBy": {
+      "id": "1",
+      "admin": false,
+      "roleIdList": [],
+      "roleIds": "",
+      "postIdList": [],
+      "roleNames": ""
+    },
+    "updateDate": "2021-07-28 02:09:36",
+    "updateBy": {
+      "id": "1",
+      "admin": false,
+      "roleIdList": [],
+      "roleIds": "",
+      "postIdList": [],
+      "roleNames": ""
+    },
+    "delFlag": 0,
+    "name": "ddd",
+    "dataSet": {
+      "id": "d1be33a50f4c4a9787de5e5c304f4819",
+      "columnList": [],
+      "params": []
+    },
+    "option": "{\"title\":{\"show\":true,\"text\":\"\",\"left\":\"auto\",\"textStyle\":{\"color\":\"#333\",\"fontSize\":18},\"subtext\":\"\",\"subtextStyle\":{\"color\":\"#aaa\",\"fontSize\":12}},\"tooltip\":{\"textStyle\":{\"color\":\"#fff\",\"fontSize\":14}},\"grid\":{\"left\":10,\"top\":60,\"right\":10,\"bottom\":60},\"legend\":{\"show\":true,\"orient\":\"horizontal\",\"textStyle\":{\"fontSize\":12,\"color\":\"#333\"}},\"extend\":{\"series\":{\"label\":{\"normal\":{\"show\":false,\"position\":\"top\",\"fontSize\":12,\"color\":\"#333\",\"fontWeight\":\"normal\"}},\"barMaxWidth\":0,\"barMinHeight\":0}},\"colors\":[\"#6395f9\",\"#64daab\",\"#657698\",\"#f6c02d\",\"#e96d5b\"]}",
+    "type": "line",
+    "xnames": "name",
+    "ynames": "num"
+  },
+  "yColumnList": [],
+  "xColumnList": [
+    {
+      "id": "1624751016375267329",
+      "createDate": "2021-06-14 17:46:45",
+      "createBy": "46bfed60109a4daa9f8b3679c2d6c7ac",
+      "updateDate": "2021-07-25 13:17:34",
+      "updateBy": "1",
+      "delFlag": 0,
+      "name": "name",
+      "label": "name",
+      "type": "VARCHAR",
+      "isNeed": true,
+      "dataSetId": "d1be33a50f4c4a9787de5e5c304f4819",
+      "sort": 0
+    }
+  ]
+}
+              this.inputForm = this.recover(this.inputForm, res.echarts)
+              this.xMetas = res.xColumnList
+              this.yMetas = res.yColumnList
+              if (res.echarts.option_content === '') {
+              this.custom = false
+            } else {
+              this.activeOption = JSON.parse(res.echarts.option_content)
+            }
             })
           }
         })
@@ -388,11 +477,17 @@
       },
       // 复制成功
       onCopy (e) {
-        this.$message.success('复制成功!')
+        ElMessage({
+            message:'复制成功!',
+            type: 'success',
+        })
       },
       // 复制失败
       onError (e) {
-        this.$message.success('复制失败!')
+        ElMessage({
+            message:'复制失败!',
+            type: 'error',
+        })
       },
       handleGenerateCode () {
         this.codeVisible = true
@@ -401,7 +496,8 @@
         this.staticTemplate = generateCode(this.activeOption, this.chartData, 'static', this.inputForm.type, this.custom)
         this.codeCopyValue = this.codeActiveName === 'dy' ? this.dyTemplate : this.staticTemplate
       },
-      refreshChart () {
+      refreshChart (s) {
+      console.log(s+'触发的，这时候的inputForm.ynames是',this.inputForm.ynames)
         if (this.inputForm.dataSet.id && this.inputForm.xnames && this.inputForm.ynames) {
           echartsService.mergeChartData({
             dataSetId: this.inputForm.dataSet.id,
@@ -422,7 +518,10 @@
       },
       onMove () {
         if (this.xMetas.length > 1) {
-          this.$message.error(`X轴只能设置一条数据，现在有${this.xMetas.length}条数据，请移除多余数据!`)
+          ElMessage({
+              message: `X轴只能设置一条数据，现在有${this.xMetas.length}条数据，请移除多余数据!`,
+              type: 'error',
+          })
         }
       },
       resetMetas () {
@@ -470,7 +569,7 @@
       line-height: 50px!important;
       height: 50px!important;
       padding: 0px!important;
-      .el-menu--horizontal>.el-submenu .el-submenu__title {
+      .el-menu--horizontal>.el-sub-menu .el-sub-menu__title {
         height: 44px;
         line-height: 44px;
         border-bottom: 2px solid transparent;

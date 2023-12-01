@@ -26,3 +26,43 @@ exports.delete = (value)=>{
     const _sql = `DELETE FROM echarts WHERE name = ?`
     return db.query(_sql,value)
 }
+
+exports.list1 = (value)=>{
+    const sql1 = `SELECT *
+        FROM echarts
+        WHERE name LIKE ?
+        LIMIT ? 
+        OFFSET ?;`
+    const sql2 = `SELECT COUNT(*) as total
+        FROM echarts
+        WHERE name LIKE ?`
+    return db.query(sql1+sql2,value)
+}
+exports.list2 = (value)=>{
+    const sql1 = `SELECT *
+        FROM echarts
+        LIMIT ? 
+        OFFSET ?;`
+    const sql2 = `SELECT COUNT(*) as total
+        FROM echarts;`
+    return db.query(sql1+sql2,value)
+}
+
+exports.queryDesignById = (value)=>{
+    const sql1 = `SELECT *
+        FROM echarts
+        WHERE id = ?;`
+    return db.query(sql1,value)
+}
+
+exports.mergeChartData = (value)=>{
+    const _sql = `SELECT * 
+        FROM echarts 
+        WHERE name = ?`
+    return db.query(_sql,value)
+}
+
+exports.test = (value)=>{
+    const _sql = value
+    return db.query(_sql)
+}

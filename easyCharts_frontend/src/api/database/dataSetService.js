@@ -3,7 +3,7 @@ import request from '@/utils/httpRequest'
 export default {
   save: function (inputForm) {
     return request({
-      url: '/database/datamodel/dataSet/save',
+      url: '/data/dataSet/save',
       method: 'post',
       data: inputForm
     })
@@ -24,33 +24,33 @@ export default {
   },
   queryById: function (id) {
     return request({
-      url: '/database/datamodel/dataSet/queryById',
+      url: '/data/queryById',
       method: 'get',
       params: { id: id }
     })
   },
 
-  getMeta: function (params) {
-    return request({
-      url: '/database/datamodel/dataSet/getMeta',
-      method: 'get',
-      headers: { arrayFormat: 'brackets' },
-      params: params
-    })
-  },
+  // getMeta: function (params) {
+  //   return request({
+  //     url: '/database/datamodel/dataSet/getMeta',
+  //     method: 'get',
+  //     headers: { arrayFormat: 'brackets' },
+  //     params: params
+  //   })
+  // },
 
-  exec: function (params) {
-    return request({
-      url: '/database/datamodel/dataSet/exec',
-      method: 'get',
-      headers: { arrayFormat: 'brackets' },
-      params: params
-    })
-  },
+  // exec: function (params) {
+  //   return request({
+  //     url: '/database/datamodel/dataSet/exec',
+  //     method: 'get',
+  //     headers: { arrayFormat: 'brackets' },
+  //     params: params
+  //   })
+  // },
 
   list: function (params) {
     return request({
-      url: '/database/datamodel/dataSet/list',
+      url: '/data/dataSet/list',
       method: 'get',
       params: params
     })

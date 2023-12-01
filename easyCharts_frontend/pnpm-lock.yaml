@@ -13,6 +13,12 @@ dependencies:
   element-plus:
     specifier: ^2.3.14
     version: registry.npmmirror.com/element-plus@2.3.14(vue@3.3.4)
+  lodash:
+    specifier: ^4.17.21
+    version: registry.npmmirror.com/lodash@4.17.21
+  lodash.omit:
+    specifier: ^4.5.0
+    version: registry.npmmirror.com/lodash.omit@4.5.0
   pinia:
     specifier: ^2.1.7
     version: registry.npmmirror.com/pinia@2.1.7(typescript@5.1.6)(vue@3.3.4)
@@ -28,9 +34,15 @@ dependencies:
   vue-chartjs:
     specifier: ^5.2.0
     version: registry.npmmirror.com/vue-chartjs@5.2.0(chart.js@4.4.0)(vue@3.3.4)
+  vue-clipboard2:
+    specifier: ^0.3.3
+    version: registry.npmmirror.com/vue-clipboard2@0.3.3
   vue-cookie:
     specifier: ^1.1.4
     version: registry.npmmirror.com/vue-cookie@1.1.4
+  vue-draggable-next:
+    specifier: ^2.2.1
+    version: registry.npmmirror.com/vue-draggable-next@2.2.1(sortablejs@1.15.0)(vue@3.3.4)
   vue-router:
     specifier: ^4.2.4
     version: registry.npmmirror.com/vue-router@4.2.4(vue@3.3.4)
@@ -1264,6 +1276,16 @@ packages:
     optionalDependencies:
       fsevents: registry.npmmirror.com/fsevents@2.3.3
 
+  registry.npmmirror.com/clipboard@2.0.11:
+    resolution: {integrity: sha512-C+0bbOqkezLIsmWSvlsXS0Q0bmkugu7jcfMIACB+RDEntIzQIkdr148we28AfSloQLRdZlYL/QYyrq05j/3Faw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/clipboard/-/clipboard-2.0.11.tgz}
+    name: clipboard
+    version: 2.0.11
+    dependencies:
+      good-listener: registry.npmmirror.com/good-listener@1.2.2
+      select: registry.npmmirror.com/select@1.1.2
+      tiny-emitter: registry.npmmirror.com/tiny-emitter@2.1.0
+    dev: false
+
   registry.npmmirror.com/clone@2.1.2:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/clone/-/clone-2.1.2.tgz}
     name: clone
@@ -1389,6 +1411,12 @@ packages:
     name: delayed-stream
     version: 1.0.0
     engines: {node: '>=0.4.0'}
+    dev: false
+
+  registry.npmmirror.com/delegate@3.2.0:
+    resolution: {integrity: sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/delegate/-/delegate-3.2.0.tgz}
+    name: delegate
+    version: 3.2.0
     dev: false
 
   registry.npmmirror.com/dom-zindex@1.0.1:
@@ -1703,6 +1731,14 @@ packages:
     dependencies:
       define-properties: registry.npmmirror.com/define-properties@1.2.1
     dev: true
+
+  registry.npmmirror.com/good-listener@1.2.2:
+    resolution: {integrity: sha512-goW1b+d9q/HIwbVYZzZ6SsTr4IgE+WA44A0GmPIQstuOrgsFcT7VEJ48nmr9GaRtNu0XTKacFLGnBPAM6Afouw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/good-listener/-/good-listener-1.2.2.tgz}
+    name: good-listener
+    version: 1.2.2
+    dependencies:
+      delegate: registry.npmmirror.com/delegate@3.2.0
+    dev: false
 
   registry.npmmirror.com/gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/gopd/-/gopd-1.0.1.tgz}
@@ -2033,6 +2069,12 @@ packages:
       '@types/lodash-es': registry.npmmirror.com/@types/lodash-es@4.17.9
       lodash: registry.npmmirror.com/lodash@4.17.21
       lodash-es: registry.npmmirror.com/lodash-es@4.17.21
+    dev: false
+
+  registry.npmmirror.com/lodash.omit@4.5.0:
+    resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash.omit/-/lodash.omit-4.5.0.tgz}
+    name: lodash.omit
+    version: 4.5.0
     dev: false
 
   registry.npmmirror.com/lodash@4.17.21:
@@ -2448,6 +2490,12 @@ packages:
       ometa: registry.npmmirror.com/ometa@0.2.2
     dev: false
 
+  registry.npmmirror.com/select@1.1.2:
+    resolution: {integrity: sha512-OwpTSOfy6xSs1+pwcNrv0RBMOzI39Lp3qQKUTPVVPRjCdNa5JH/oPRiqsesIskK8TVgmRiHwO4KXlV2Li9dANA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/select/-/select-1.1.2.tgz}
+    name: select
+    version: 1.1.2
+    dev: false
+
   registry.npmmirror.com/semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/semver/-/semver-5.7.2.tgz}
     name: semver
@@ -2518,6 +2566,12 @@ packages:
     resolution: {integrity: sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sortablejs/-/sortablejs-1.10.2.tgz}
     name: sortablejs
     version: 1.10.2
+    dev: false
+
+  registry.npmmirror.com/sortablejs@1.15.0:
+    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sortablejs/-/sortablejs-1.15.0.tgz}
+    name: sortablejs
+    version: 1.15.0
     dev: false
 
   registry.npmmirror.com/source-map-js@1.0.2:
@@ -2631,6 +2685,12 @@ packages:
     resolution: {integrity: sha512-4KJ21HYTNumxnHvCbLrtrrhSwtWXzpmaRJIUg4biBii5AiSe2izod5bauXiiQxVuf2Fta57U2DTW1Fa4/6Cmgw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tiny-cookie/-/tiny-cookie-1.0.1.tgz}
     name: tiny-cookie
     version: 1.0.1
+    dev: false
+
+  registry.npmmirror.com/tiny-emitter@2.1.0:
+    resolution: {integrity: sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz}
+    name: tiny-emitter
+    version: 2.1.0
     dev: false
 
   registry.npmmirror.com/to-fast-properties@2.0.0:
@@ -2787,6 +2847,14 @@ packages:
       vue: registry.npmmirror.com/vue@3.3.4
     dev: false
 
+  registry.npmmirror.com/vue-clipboard2@0.3.3:
+    resolution: {integrity: sha512-aNWXIL2DKgJyY/1OOeITwAQz1fHaCIGvUFHf9h8UcoQBG5a74MkdhS/xqoYe7DNZdQmZRL+TAdIbtUs9OyVjbw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-clipboard2/-/vue-clipboard2-0.3.3.tgz}
+    name: vue-clipboard2
+    version: 0.3.3
+    dependencies:
+      clipboard: registry.npmmirror.com/clipboard@2.0.11
+    dev: false
+
   registry.npmmirror.com/vue-cookie@1.1.4:
     resolution: {integrity: sha512-lxWIzmUTCVra0H7YPbNpYx0wbTQThV+n7ueUOcqtK8dlckmfB8fcyf4OEiRuQUd7iiVub2T3IDlWiisEM5Ku0Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-cookie/-/vue-cookie-1.1.4.tgz}
     name: vue-cookie
@@ -2810,6 +2878,19 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
+      vue: registry.npmmirror.com/vue@3.3.4
+    dev: false
+
+  registry.npmmirror.com/vue-draggable-next@2.2.1(sortablejs@1.15.0)(vue@3.3.4):
+    resolution: {integrity: sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-draggable-next/-/vue-draggable-next-2.2.1.tgz}
+    id: registry.npmmirror.com/vue-draggable-next/2.2.1
+    name: vue-draggable-next
+    version: 2.2.1
+    peerDependencies:
+      sortablejs: ^1.14.0
+      vue: ^3.2.2
+    dependencies:
+      sortablejs: registry.npmmirror.com/sortablejs@1.15.0
       vue: registry.npmmirror.com/vue@3.3.4
     dev: false
 

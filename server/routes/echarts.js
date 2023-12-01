@@ -13,6 +13,15 @@ module.exports = function(app){
     app.post('/echarts/delete', (req, res) => {
       controller.delete(req, res);
     })
+    app.get('/echarts/list', (req, res) => {
+      controller.list(req, res);
+    })
+    app.get('/echarts/queryDesignById', (req, res) => {
+      controller.queryDesignById(req, res);
+    })
+    app.get('/echarts/mergeChartData',(req,res)=>{
+      controller.mergeChartData(req,res)
+    })
 }
 
 

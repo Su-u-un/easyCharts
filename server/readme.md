@@ -19,6 +19,13 @@ pnpm install mysql --save
 pnpm install ejs --save
 ```
 
+### 关于验证码
+技术栈：express-session  +captchapng
+逻辑：
+1. 后端使用captchapng生成验证码，设置一个session key为captcha，验证码为value，设置好过期时间
+3. 登陆时对验证码进行校验
+
+
 ### 前端需要使用的api
 1. 登录（比对数据库users的字段）
 2. 注册（把数据inner到users表内）

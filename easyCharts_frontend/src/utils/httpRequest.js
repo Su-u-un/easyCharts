@@ -39,22 +39,29 @@ axios.interceptors.response.use(res => {
   if (error.response.status === 408 || error.response.status === 401) { // 需要重新登录
     router.push({ name: 'login' })
     ElMessage({
-      message: error.response.error,
+      message: error.response.data.error,
       type: 'error',
       showClose: true,
       dangerouslyUseHTMLString: true,
       duration: 3000
     })
+  } else if (error.response.status === 403) { // 请求被拒绝
+    ElMessage({
+      message: '403 请求被拒绝' + ': ' + error.response.data.error,
+      type: 'error',
+      showClose: true,
+      duration: 3000
+    })
   } else if (error.response.status === 404) { // 路径找不到
     ElMessage({
-      message: '404 路径找不到' + ': ' + error.response.config.url,
+      message: '404 路径找不到' + ': ' + error.response.data.error,
       type: 'error',
       showClose: true,
       duration: 3000
     })
   } else if (error.response.status === 503) {
     ElMessage({
-      message: '503 服务不可用' + ': ' + error.response.config.url,
+      message: '503 服务不可用' + ': ' + error.response.data.error,
       type: 'error',
       showClose: true,
       dangerouslyUseHTMLString: true,
@@ -62,7 +69,7 @@ axios.interceptors.response.use(res => {
     })
   } else if (error.response.status === 504) {
     ElMessage({
-      message: '504 网络连接错误' + ': ' + error.response.data,
+      message: '504 网络连接错误' + ': ' + error.response.data.error,
       type: 'error',
       showClose: true,
       dangerouslyUseHTMLString: true,
@@ -70,7 +77,7 @@ axios.interceptors.response.use(res => {
     })
   } else {
     ElMessage({
-      message: error.response.data || error.response || error,
+      message: error.response.data.error || error.response || error,
       type: 'error',
       showClose: true,
       dangerouslyUseHTMLString: true,

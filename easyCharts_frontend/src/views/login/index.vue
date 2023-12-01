@@ -25,9 +25,13 @@
                         v-model="loginForm.password"
                         show-password
                     />
-                <el-form-item label="验证码" prop="code">
-                    <el-image @click="getCaptcha" :src="captchaImg" style="height:34px"></el-image>
                 </el-form-item>
+                <el-form-item label="验证码" prop="code">
+                    <el-input
+                        v-model="loginForm.code"
+                        style="width:162px;"
+                    />
+                    <el-image @click="getCaptcha" :src="captchaImg" style="height:30px"></el-image>
                 </el-form-item>
                 <el-form-item class="login_btn">
                     <el-button :loading="loading"  type="primary" @click="handleLogin()">登录</el-button>
@@ -86,12 +90,16 @@
   
 <script setup>
 import {ElForm,ElFormItem,ElInput,ElButton,ElMessage,ElImage} from 'element-plus'
-import {ref,onMounted} from 'vue'
+import {ref,onMounted,onActivated} from 'vue'
 import {useRouter} from 'vue-router'
 import loginService from '@/api/auth/authService'
 import {setToken} from '@/utils/cookies'
 
 onMounted(() => {
+  getCaptcha()
+})
+
+onActivated(() => {
   getCaptcha()
 })
 
@@ -101,6 +109,7 @@ let loading = ref(false)
 let turn = ref(true)
 const loginRef = ref()
 const registerRef = ref()
+const captchaImg = ref('')
 
 const router = useRouter()
 
@@ -124,7 +133,6 @@ const checkRePwd = (rule, value, callback) => {
 const loginForm = ref({
           username:'',
           password:'',
-          uuid:'',
           code:''
         })
 //注册表单
@@ -148,12 +156,10 @@ const formRules = ref({
             {required: true,message:'请确认密码', trigger: 'blur',},
             {validator:checkRePwd,trigger: 'blur'},
           ],
-        //   imageCode:[
-        //     {required:true,message:'请输入验证码',trigger:'change'},
-        //     {len:4,message:'请输入正确的验证码'}
-        //   ],
           code: [
-            {required: true, message: '验证码不能为空', trigger: 'blur'}
+            {required: true, message: '验证码不能为空', trigger: 'blur'},
+            {required:true,message:'请输入验证码',trigger:'change'},
+            {len:4,message:'请输入正确的验证码'}
           ]
         })
 //切换表单
@@ -183,6 +189,7 @@ const handleLogin = ()=>{
                     message: "账号或密码错误!",
                     type: 'error',
                 })
+                getCaptcha()
               loading.value = false
             }).catch(err=>{
               loading.value = false
@@ -235,10 +242,11 @@ const handleRegister = ()=>{
 }
 // 获取验证码
 const getCaptcha = ()=>{
-    loginService.getCode().then(({data}) => {
-        const captchaImg = ref('data:image/gif;base64,' + data.codeImg)
-        loginForm.value.uuid = data.uuid
+    loginService.getCaptcha().then((res) => {
+        captchaImg.value = 'data:image/gif;base64,' + res.data
+        // loginForm.value.uuid = data.uuid
     })
+    loginForm.value.code = ''
 }
 </script>
   

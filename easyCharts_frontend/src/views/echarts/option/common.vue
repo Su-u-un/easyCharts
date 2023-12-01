@@ -149,36 +149,36 @@
       <!-- 颜色设置 -->
       <template v-if="main.vaildProp('colorList')">
         <el-collapse-item title="自定义配色">
-                     <el-button type="primary" @click="addColor" size="mini">添加</el-button>
-                      <el-table
-                      :data="dataColors"
-                      style="width: 100%">
-                      <el-table-column
-                        type="index">
-                      </el-table-column>
-                    
-                      <el-table-column
-                        prop="color"
-                        label="颜色">
-                         <template slot-scope="scope">
-                           <el-color-picker v-model="scope.row.color"></el-color-picker>
-                         </template>
-                      </el-table-column>
-                      <el-table-column
-                        fixed="right"
-                        :key="Math.random()"
-                        label="操作"
-                        width="120">
-                        <template slot-scope="scope">
-                          <el-button
-                            @click.native.prevent="dataColors.splice(scope.$index, 1)"
-                            type="text"
-                            size="small">
-                            移除
-                          </el-button>
-                        </template>
-                      </el-table-column>
-                    </el-table>
+          <el-button type="primary" @click="addColor" size="mini">添加</el-button>
+            <el-table
+            :data="dataColors"
+            style="width: 100%">
+            <el-table-column
+              type="index">
+            </el-table-column>
+          
+            <el-table-column
+              prop="color"
+              label="颜色">
+              <template #default="scope">
+                <el-color-picker v-model="scope.row.color"></el-color-picker>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              :key="Math.random()"
+              label="操作"
+              width="120">
+              <template #default="scope">
+                <el-button
+                  @click.native.prevent="dataColors.splice(scope.$index, 1)"
+                  type="text"
+                  size="small">
+                  移除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-collapse-item>
       </template>
     </el-collapse>
